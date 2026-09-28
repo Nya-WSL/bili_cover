@@ -2,5 +2,6 @@ node_modules/
 *.log
 .DS_Store
 package-lock.json   # yarn 项目不提交 npm 锁文件
+.vercel/             # Vercel 构建/缓存产物
 .codebuddy/
 CODEBUDDY.md

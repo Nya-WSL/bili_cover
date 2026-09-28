@@ -24,8 +24,22 @@
 - `GET /api/resolve?type=av|bv|cv|live|bangumi|b23&id=…` → `{ code, message, data }`；成功时 `data` 含 `type / imageUrl / title / desc / author / uid`（番剧 `desc` 取简介 `evaluate`，`author`/`uid` 为 null）。`code=0` 成功；`400` 参数/类型错误；`-1` 网络错误；`-2` 短链接解析失败；其它为 B 站上游错误码透传（如 `-404`）。
 - `GET /api/download?url=<封面地址>` → 代理下载图片（仅允许 B 站 CDN 域名），返回 `Content-Disposition: attachment`。
 
+## 部署到 Vercel
+
+Vercel 的 Serverless Functions 可直接运行现有 Express 后端，无需 CORS 代理、无需改写代码。
+
+1. 导入仓库到 Vercel（Framework Preset 选 **Other** 即可）。
+2. 无需额外构建命令与输出目录：
+   - `api/app.js` 作为函数入口，导出 `createApp()`；
+   - `vercel.json` 用一条 catch-all rewrite 把所有请求（静态资源 + `/api/*`）转发给该 Express 应用统一处理。
+3. 部署完成后，`/` 是首页，`/api/resolve`、`/api/download` 与本地行为完全一致。
+
+> 本地仍用 `yarn start` 启动单机服务；Vercel 仅加载 `api/app.js` 作为函数，二者共用同一份 `server/` 代码。
+
 ## 目录结构
 
+- `api/app.js`：Vercel Serverless Function 入口（导出 Express 应用）
+- `vercel.json`：catch-all rewrite，将请求转发到 Express 函数
 - `shared/parser.js`：前后端共用的输入解析（UMD，同一份正则）
 - `server/bilibili.js`：上游 HTTP 客户端 + `BiliApiError`
 - `server/resolver-core.js`：av/bv/cv/live 解析与字段归一
