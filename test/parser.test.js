@@ -21,23 +21,30 @@ const cases = [
   ['https://www.bilibili.com/video/av170001', { type: 'av', id: '170001' }],
   ['https://www.bilibili.com/video/av170001?p=2&vd_source=abcd', { type: 'av', id: '170001' }],
   ['http://www.bilibili.com/video/av170001', { type: 'av', id: '170001' }],
+  // 无协议前缀同样可识别
+  ['www.bilibili.com/video/av170001', { type: 'av', id: '170001' }],
+  ['bilibili.com/video/av170001?p=2', { type: 'av', id: '170001' }],
 
   // ---- bv（捕获组不含 BV 前缀，见 Global Constraints §2）----
   ['BV1xx411c7mD', { type: 'bv', id: '1xx411c7mD' }],
   ['bv1xx411c7mD', { type: 'bv', id: '1xx411c7mD' }],
   ['https://www.bilibili.com/video/BV1xx411c7mD?share_source=copy_web', { type: 'bv', id: '1xx411c7mD' }],
+  ['www.bilibili.com/video/BV1xx411c7mD', { type: 'bv', id: '1xx411c7mD' }],
 
   // ---- cv ----
   ['cv123456', { type: 'cv', id: '123456' }],
   ['https://www.bilibili.com/read/cv123456?spm_id_from=333.999.0.0', { type: 'cv', id: '123456' }],
+  ['www.bilibili.com/read/cv123456', { type: 'cv', id: '123456' }],
 
   // ---- live ----
   ['https://live.bilibili.com/2233', { type: 'live', id: '2233' }],
   ['https://live.bilibili.com/2233?spm_id_from=333.999.0.0', { type: 'live', id: '2233' }],
+  ['live.bilibili.com/2233', { type: 'live', id: '2233' }],
 
   // ---- b23 ----
   ['https://b23.tv/x9ABCD', { type: 'b23', id: 'x9ABCD' }],
   ['https://b23.tv/x9ABCD?share_source=copy_web', { type: 'b23', id: 'x9ABCD' }],
+  ['b23.tv/x9ABCD', { type: 'b23', id: 'x9ABCD' }],
 ];
 
 test('parseInput 覆盖全部类型与非法输入', () => {

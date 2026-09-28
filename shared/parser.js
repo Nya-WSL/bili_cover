@@ -19,15 +19,17 @@
   'use strict';
 
   // 顺序即优先级：先 av/bv/cv，再 live、b23；条目顺序对应需求给出的正则。
+  // URL 规则中的协议 https?:// 设为可选项，使无协议链接（如 www.bilibili.com/...）
+  // 也能被识别（整串 ^...$ 锚定并先 trim，整体 /i 大小写不敏感）。
   const PATTERNS = [
     { type: 'av', re: /^(?:(?:a|A)(?:v|V))?([0-9]+)$/ },
-    { type: 'av', re: /^https?:\/\/.*?bilibili.*?av([0-9]+).*?$/i },
+    { type: 'av', re: /^(?:https?:\/\/)?.*?bilibili.*?av([0-9]+).*?$/i },
     { type: 'bv', re: /^(?:(?:b|B)(?:v|V))([0-9A-Za-z]+)$/ },
-    { type: 'bv', re: /^https?:\/\/.*?bilibili.*?BV([0-9A-Za-z]+).*?$/i },
+    { type: 'bv', re: /^(?:https?:\/\/)?.*?bilibili.*?BV([0-9A-Za-z]+).*?$/i },
     { type: 'cv', re: /^(?:(?:c|C)(?:v|V))([0-9]+)$/ },
-    { type: 'cv', re: /^https?:\/\/.*?bilibili.*?cv([0-9]+).*?$/i },
-    { type: 'live', re: /^https?:\/\/live\.bilibili.*?\/([0-9]+).*?$/i },
-    { type: 'b23', re: /^https?:\/\/b23\.tv\/([0-9A-Za-z]+).*?$/i },
+    { type: 'cv', re: /^(?:https?:\/\/)?.*?bilibili.*?cv([0-9]+).*?$/i },
+    { type: 'live', re: /^(?:https?:\/\/)?live\.bilibili.*?\/([0-9]+).*?$/i },
+    { type: 'b23', re: /^(?:https?:\/\/)?b23\.tv\/([0-9A-Za-z]+).*?$/i },
   ];
 
   function parseInput(input) {
