@@ -43,6 +43,12 @@ async function stubFetch(url, init = {}) {
   if (u.includes('/room/v1/Room/get_info')) {
     return new Response(JSON.stringify(LIVE_OK), { status: 200 });
   }
+  if (u.includes('/pgc/view/web/season')) {
+    return new Response(
+      JSON.stringify({ code: 0, message: 'success', result: { cover: 'https://i0.hdslb.com/bfs/bangumi/cover.jpg', title: '示例番剧', evaluate: '番剧简介' } }),
+      { status: 200 }
+    );
+  }
   throw new Error('unexpected upstream url: ' + u);
 }
 
@@ -97,4 +103,12 @@ test('上游错误码透传到信封', async () => {
 test('不支持的类型返回 code 400', async () => {
   const body = await (await fetch(base + '/api/resolve?type=zzz&id=1')).json();
   assert.equal(body.code, 400);
+});
+
+test('bangumi 解析成功', async () => {
+  const body = await (await fetch(base + '/api/resolve?type=bangumi&id=ep12345')).json();
+  assert.equal(body.code, 0);
+  assert.equal(body.data.type, 'bangumi');
+  assert.equal(body.data.title, '示例番剧');
+  assert.equal(body.data.desc, '番剧简介');
 });

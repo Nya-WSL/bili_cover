@@ -16,11 +16,12 @@
 - bv：`BV1xx411c7mD`、`https://www.bilibili.com/video/BV1xx411c7mD`
 - cv：`cv123456`、`https://www.bilibili.com/read/cv123456`
 - live：`https://live.bilibili.com/2233`
+- bangumi（番剧）：`ep12345` / `ss67890` / `https://www.bilibili.com/bangumi/play/ep12345`
 - b23：`https://b23.tv/xxxx`
 
 ## API
 
-- `GET /api/resolve?type=av|bv|cv|live|b23&id=…` → `{ code, message, data }`；成功时 `data` 含 `type / imageUrl / title / desc / author / uid`。`code=0` 成功；`400` 参数/类型错误；`-1` 网络错误；`-2` 短链接解析失败；其它为 B 站上游错误码透传（如 `-404`）。
+- `GET /api/resolve?type=av|bv|cv|live|bangumi|b23&id=…` → `{ code, message, data }`；成功时 `data` 含 `type / imageUrl / title / desc / author / uid`（番剧 `desc` 取简介 `evaluate`，`author`/`uid` 为 null）。`code=0` 成功；`400` 参数/类型错误；`-1` 网络错误；`-2` 短链接解析失败；其它为 B 站上游错误码透传（如 `-404`）。
 - `GET /api/download?url=<封面地址>` → 代理下载图片（仅允许 B 站 CDN 域名），返回 `Content-Disposition: attachment`。
 
 ## 目录结构

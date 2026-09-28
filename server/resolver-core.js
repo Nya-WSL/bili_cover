@@ -29,6 +29,8 @@ async function resolveKind(kind, id, fetchFn) {
       return resolveColumn(id, fetchFn);
     case 'live':
       return resolveLive(id, fetchFn);
+    case 'bangumi':
+      return resolveBangumi(id, fetchFn);
     default:
       throw new BiliApiError(400, '不支持的类型：' + kind);
   }
@@ -87,6 +89,32 @@ async function resolveLive(id, fetchFn) {
     desc: null,
     author: null,
     uid: data.uid != null ? String(data.uid) : null,
+  };
+}
+
+async function resolveBangumi(id, fetchFn) {
+  // 番剧接口用 result 包裹（非 data）；ep 编号走 ep_id，ss 编号走 season_id
+  const lower = String(id).toLowerCase();
+  const param = lower.startsWith('ep') ? 'ep_id' : 'season_id';
+  const num = String(id).slice(2);
+  const url =
+    'https://api.bilibili.com/pgc/view/web/season?' +
+    param +
+    '=' +
+    encodeURIComponent(num);
+  const json = await httpJson(url, { fetchFn });
+  checkUpstream(json);
+  const data = json.result || {};
+  if (!data.cover) {
+    throw new BiliApiError(-1, '上游返回缺少封面字段 cover');
+  }
+  return {
+    type: 'bangumi',
+    imageUrl: data.cover,
+    title: data.title || '',
+    desc: data.evaluate || null,
+    author: null,
+    uid: null,
   };
 }
 

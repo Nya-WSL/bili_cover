@@ -36,6 +36,14 @@ const cases = [
   ['https://www.bilibili.com/read/cv123456?spm_id_from=333.999.0.0', { type: 'cv', id: '123456' }],
   ['www.bilibili.com/read/cv123456', { type: 'cv', id: '123456' }],
 
+  // ---- bangumi（番剧）----
+  ['ep12345', { type: 'bangumi', id: 'ep12345' }],
+  ['ss67890', { type: 'bangumi', id: 'ss67890' }],
+  ['EP12345', { type: 'bangumi', id: 'EP12345' }],
+  ['https://www.bilibili.com/bangumi/play/ep12345', { type: 'bangumi', id: 'ep12345' }],
+  ['https://www.bilibili.com/bangumi/play/ss67890?spm_id_from=333.999.0.0', { type: 'bangumi', id: 'ss67890' }],
+  ['www.bilibili.com/bangumi/play/ep12345', { type: 'bangumi', id: 'ep12345' }],
+
   // ---- live ----
   ['https://live.bilibili.com/2233', { type: 'live', id: '2233' }],
   ['https://live.bilibili.com/2233?spm_id_from=333.999.0.0', { type: 'live', id: '2233' }],

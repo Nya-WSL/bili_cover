@@ -28,6 +28,9 @@
     { type: 'bv', re: /^(?:https?:\/\/)?.*?bilibili.*?BV([0-9A-Za-z]+).*?$/i },
     { type: 'cv', re: /^(?:(?:c|C)(?:v|V))([0-9]+)$/ },
     { type: 'cv', re: /^(?:https?:\/\/)?.*?bilibili.*?cv([0-9]+).*?$/i },
+    // 番剧 bangumi：裸输入 ep/ss 编号，或 bangumi/play/(ep|ss) 链接（无协议亦可）
+    { type: 'bangumi', re: /^((?:ep|ss)\d+)$/i },
+    { type: 'bangumi', re: /^(?:https?:\/\/)?.*?bilibili.*?bangumi\/play\/((?:ep|ss)\d+).*?$/i },
     { type: 'live', re: /^(?:https?:\/\/)?live\.bilibili.*?\/([0-9]+).*?$/i },
     { type: 'b23', re: /^(?:https?:\/\/)?b23\.tv\/([0-9A-Za-z]+).*?$/i },
   ];

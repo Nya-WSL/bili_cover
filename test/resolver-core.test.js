@@ -30,6 +30,16 @@ const LIVE_OK = {
   data: { user_cover: 'https://i0.hdslb.com/bfs/room/cover.jpg', title: '示例直播间标题', uid: 2233 },
 };
 const LIVE_ERR = { code: -400, message: '请求错误' };
+const BANGUMI_OK = {
+  code: 0,
+  message: 'success',
+  result: {
+    cover: 'https://i0.hdslb.com/bfs/bangumi/cover.jpg',
+    title: '示例番剧',
+    evaluate: '这是番剧简介。',
+  },
+};
+const BANGUMI_ERR = { code: -404, message: '啥都木有' };
 
 function stubByUrl(record) {
   return async (url, init = {}) => {
@@ -49,6 +59,13 @@ function stubByUrl(record) {
     }
     if (u.includes('/room/v1/Room/get_info')) {
       return new Response(JSON.stringify(init.body === 'id=404' ? LIVE_ERR : LIVE_OK), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }
+    if (u.includes('/pgc/view/web/season')) {
+      const isErr = u.includes('ep_id=404') || u.includes('season_id=404');
+      return new Response(JSON.stringify(isErr ? BANGUMI_ERR : BANGUMI_OK), {
         status: 200,
         headers: { 'content-type': 'application/json' },
       });
@@ -114,4 +131,30 @@ test('上游 code!=0 时透传错误码与 message', async () => {
 
 test('不支持的类型抛 code 400', async () => {
   await assert.rejects(resolveKind('xxx', '1', stubByUrl([])), (err) => err.code === 400);
+});
+
+test('bangumi ep 解析成功并归一化（result 包裹）', async () => {
+  const record = [];
+  const data = await resolveKind('bangumi', 'ep12345', stubByUrl(record));
+  assert.equal(data.type, 'bangumi');
+  assert.equal(data.imageUrl, BANGUMI_OK.result.cover);
+  assert.equal(data.title, '示例番剧');
+  assert.equal(data.desc, '这是番剧简介。');
+  assert.equal(data.author, null);
+  assert.equal(data.uid, null);
+  assert.match(record[0].url, /ep_id=12345/);
+});
+
+test('bangumi ss 解析使用 season_id 参数', async () => {
+  const record = [];
+  const data = await resolveKind('bangumi', 'ss67890', stubByUrl(record));
+  assert.equal(data.type, 'bangumi');
+  assert.match(record[0].url, /season_id=67890/);
+});
+
+test('bangumi 上游错误码透传', async () => {
+  await assert.rejects(
+    resolveKind('bangumi', 'ep404', stubByUrl([])),
+    (err) => err instanceof BiliApiError && err.code === -404 && err.message === '啥都木有'
+  );
 });
