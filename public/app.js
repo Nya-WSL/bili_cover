@@ -21,7 +21,6 @@
   const input = document.getElementById('url-input');
   const btn = document.getElementById('extract-btn');
   const inputError = document.getElementById('input-error');
-  const loading = document.getElementById('loading');
   const result = document.getElementById('result');
 
   const DEFAULT_BTN_TEXT = '提取封面';
@@ -35,7 +34,6 @@
     inFlight = busy;
     btn.disabled = busy;
     btn.textContent = busy ? '解析中…' : DEFAULT_BTN_TEXT;
-    loading.hidden = !busy;
   }
 
   function clearResult() {

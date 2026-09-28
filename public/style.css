@@ -99,23 +99,6 @@ html, body {
   font-size: 14px;
   margin: 0 0 14px;
 }
-.loading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-sub);
-  font-size: 14px;
-  margin: 8px 0;
-}
-.spinner {
-  width: 16px; height: 16px;
-  border: 2px solid var(--border);
-  border-top-color: var(--bili-blue);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* ---------- Result card ---------- */
 .result { width: 100%; max-width: 640px; }
 .result:not([hidden]) {
