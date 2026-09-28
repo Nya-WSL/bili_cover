@@ -1,0 +1,18 @@
+{
+  "name": "bilicover",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bilibili 视频/直播/专栏封面提取（前端 + Node/Express API）",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18.13.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

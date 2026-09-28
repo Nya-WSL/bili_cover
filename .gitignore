@@ -1,0 +1,4 @@
+node_modules/
+*.log
+.DS_Store
+package-lock.json   # yarn 项目不提交 npm 锁文件
