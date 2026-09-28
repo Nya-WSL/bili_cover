@@ -2,11 +2,45 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BiliCover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>BiliCover · B站封面提取</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <h1>BiliCover</h1>
-  <p>占位页：Task 8 将替换为完整界面。</p>
+  <main class="page">
+    <header class="hero">
+      <h1 class="logo">Bili<span>Cover</span></h1>
+      <p class="tagline">粘贴 B 站视频 / 直播 / 专栏链接或编号，一键提取封面图</p>
+    </header>
+
+    <form id="extract-form" class="search" autocomplete="off">
+      <input
+        id="url-input"
+        class="search-input"
+        type="text"
+        name="url"
+        placeholder="粘贴链接或编号，如 BV1xx411c7mD / https://live.bilibili.com/2233"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+      />
+      <button id="extract-btn" class="search-btn" type="submit">提取封面</button>
+    </form>
+
+    <p id="input-error" class="input-error" role="alert" hidden>无法识别的输入</p>
+
+    <div id="loading" class="loading" hidden>
+      <span class="spinner"></span> 解析中…
+    </div>
+
+    <section id="result" class="result" hidden></section>
+
+    <footer class="foot">
+      支持：视频 av / BV · 专栏 cv · 直播间 live · b23 短链接
+    </footer>
+  </main>
+
+  <script src="/parser.js"></script>
+  <script src="/app.js"></script>
 </body>
 </html>

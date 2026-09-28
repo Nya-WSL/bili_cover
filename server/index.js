@@ -39,6 +39,11 @@ function createApp({ fetchFn = fetch } = {}) {
   const app = express();
   app.disable('x-powered-by');
 
+  // 供前端复用与后端完全一致的输入解析逻辑（同一份 shared/parser.js）
+  app.get('/parser.js', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'shared', 'parser.js'));
+  });
+
   app.get('/api/resolve', async (req, res) => {
     const type = typeof req.query.type === 'string' ? req.query.type.trim() : '';
     const id = typeof req.query.id === 'string' ? req.query.id.trim() : '';
